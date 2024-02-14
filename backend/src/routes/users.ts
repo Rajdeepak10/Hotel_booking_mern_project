@@ -1,7 +1,6 @@
 import express, {Request,Response} from "express"
 import User from "../models/user";
 import {check, validationResult} from 'express-validator'
-import { log } from "console";
 import jwt from 'jsonwebtoken'
 // creating a router object ehich can be used to define routes for different http methods
 const router = express.Router();
@@ -41,7 +40,7 @@ async(req:Request,res:Response)=>{
             secure:process.env.NODE_ENV==='production',
             maxAge: 86400000
         })
-        return res.status(200).send({message: "Ok"})
+        return res.status(200).send({message: "User registered OK"})
     } catch (error) {
         console.log(error);
         // we always try to return generic error to front_end and specific error only limited to back_end to avoid losing info

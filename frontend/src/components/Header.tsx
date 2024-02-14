@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom"
-import Hero from "./Hero"
 const Header = () => {
     return (
         <div className="bg-blue-800 py-6 ">
