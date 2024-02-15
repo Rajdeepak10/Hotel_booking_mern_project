@@ -4,12 +4,18 @@ import 'dotenv/config'
 import mongoose from 'mongoose'
 import userRoutes from './routes/users'
 import authRoutes from "./routes/auth"
+import cookieParser from 'cookie-parser'
 const app=express()
 //automatically convert api request body into json format
 app.use(express.json())
 // tell express to use urlencoded middleware which is used to parse incoming requeest body in url-encoded format and make them availabe in 'req.body object of route hanclers 
 app.use(express.urlencoded({extended: true}))
-app.use(cors())
+// allowed origins that are allowed to access resources from the server and credential true means server allows credentials(cookies) to be sent cross-origin requests
+app.use(cookieParser())
+app.use(cors({
+    origin:process.env.FRONTEND_URL,
+    credentials: true
+}))
 
 
 
