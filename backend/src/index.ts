@@ -21,11 +21,11 @@ app.use(cors({
 
 // connection to mongodb
 // we are assuring typescript that URl is definately a string and it allow us to pass it to mongoose
-//
-if (process.env.MONGO_CONNECTION_STRING) {
-    mongoose.connect(process.env.MONGO_CONNECTION_STRING)   
-}
 
+mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string)
+// .then(()=>{
+//     console.log("Connected to database:",process.env.MONGODB_CONNECTION_STRING);
+// })
 
 
 app.use("/api/users",userRoutes)
