@@ -5,6 +5,7 @@ import mongoose from 'mongoose'
 import userRoutes from './routes/users'
 import authRoutes from "./routes/auth"
 import cookieParser from 'cookie-parser'
+import path from 'path'
 const app=express()
 //automatically convert api request body into json format
 app.use(express.json())
@@ -26,11 +27,14 @@ mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string)
 // .then(()=>{
 //     console.log("Connected to database:",process.env.MONGODB_CONNECTION_STRING);
 // })
+//this is used to serve static files of frontend
+// whenever search comes for these files express will search those search in this dir
+//path.join() used to construct absultate path
+app.use(express.static(path.join(__dirname,"../../frontend/dist")))
 
 
 app.use("/api/users",userRoutes)
 app.use("/api/auth",authRoutes)
-
 
 app.listen(3000,()=>{
     console.log("server is running on localhost:3000");
