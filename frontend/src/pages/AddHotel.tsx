@@ -1,5 +1,5 @@
 
-import ManageHotelForm, { hotelFormData } from '../forms/ManageHotelForm'
+import ManageHotelForm from '../forms/ManageHotelForm'
 import { useMutation } from 'react-query'
 import { useAppContext } from '../contexts/AppContext'
 import * as apiClient from '../api-client'
