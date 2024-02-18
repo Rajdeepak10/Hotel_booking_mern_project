@@ -1,5 +1,4 @@
 // all fetch request of front end is here
-
 import { RegisterFormData } from "./pages/Register";
 import { SignInFormData } from "./pages/SignIn";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
@@ -46,6 +45,25 @@ export const signOut = async()=>{
         
     }
 }
+export const addMyHotel = async(hotelData:FormData)=>{
+    const response=await fetch(`${API_BASE_URL}/api/my-hotels`,{
+        method:"POST",
+        credentials:"include",
+        body:hotelData
+    })
+    if(!response.ok){
+        throw new Error("Failed to add hotel")
+    }
+    const data = await response.json()
+    console.log(data);
+    
+    return data
+
+}
+
+
+
+
 // checking whether user is loged in or not we will do it by checking cookie which we set up during register functionality
 export const validateToken=async()=>{
     const response = await fetch(`${API_BASE_URL}/api/auth/validate-token`,{
