@@ -4,7 +4,7 @@ import 'dotenv/config'
 import mongoose from 'mongoose'
 import userRoutes from './routes/users'
 import authRoutes from "./routes/auth"
-import hotelRoutes from './routes/my-hotels'
+import myHotelRoutes from "./routes/my-hotels";
 import cookieParser from 'cookie-parser'
 import path from 'path'
 import {v2 as cloudinary} from 'cloudinary';
@@ -49,10 +49,10 @@ app.use(express.static(path.join(__dirname,"../../frontend/dist")))
 
 app.use("/api/users",userRoutes)
 app.use("/api/auth",authRoutes)
-app.use("/api/my-hotels",hotelRoutes)
+app.use("/api/my-hotels", myHotelRoutes);
 // all request except api should go to index.html
 
-app.get("*",(reg:Request,res:Response)=>{
+app.get("*",(req:Request,res:Response)=>{
     res.sendFile(path.join(__dirname,'../../frontend/dist/index.html'))
 })
 

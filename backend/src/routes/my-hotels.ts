@@ -3,7 +3,8 @@ import express,{Request,Response} from "express";
 import multer from 'multer'
 import cloudinary from 'cloudinary';
 import verifyToken from "../middleware/auth";
-import Hotel, { hotelType } from "../models/hotel";
+import Hotel from "../models/hotel";
+import { hotelType } from "../shared/types";
 import { body } from "express-validator";
 const router = express.Router();
 // creating a storage engine that stores files in memory as buffer
@@ -58,7 +59,15 @@ router.post('/',verifyToken,[
             
             
         }
-
 })
+router.get("/", verifyToken, async (req: Request, res: Response) => {
+    try {
+        const hotels = await Hotel.find({ userId: req.userId });
+        console.log(hotels);
+        res.json(hotels);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching hotels" });
+    }
+});
 export default router
 
