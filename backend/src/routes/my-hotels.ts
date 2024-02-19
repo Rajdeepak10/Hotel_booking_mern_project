@@ -69,5 +69,51 @@ router.get("/", verifyToken, async (req: Request, res: Response) => {
         res.status(500).json({ message: "Error fetching hotels" });
     }
 });
+router.get("/:id",verifyToken,async(req:Request,res:Response)=>{
+    const id = req.params.id.toString()
+    try {
+        // if we use find then it will return a array of object but if we use findOne it will send only one object
+        const hotel = await Hotel.findOne({
+            _id:id,
+            userId:req.userId
+        })
+        res.json(hotel)
+    } catch (error) {
+        res.status(500).json({message:"error fetching hotels"})
+        
+    }
+
+})
+router.put('/:hotelId',verifyToken,upload.array('imageFiles'),async (req:Request,res:Response)=>{
+    try {
+        const updatedHotel:hotelType = req.body
+        updatedHotel.lastUpdated=new Date();
+        // Without new: true, the returned value would be the document as it was before the update. With new: true, it ensures that the returned document reflects the changes made by the update operation.
+        const hotel = await Hotel.findOneAndUpdate({_id:req.params.hotelId,
+        userId:req.userId},updatedHotel,{new: true})
+        if(!hotel){
+            return res.status(404).json({message:"Hotel not found"})
+        }
+        const files = req.files as Express.Multer.File[]
+        const uploadPromises = files.map(async(image)=>{
+            //converting image into base64 buffer string
+            const b64 = Buffer.from(image.buffer).toString("base64")
+            let dataUrI = "data:"+image.mimetype+";base64,"+b64;
+            const res=await cloudinary.v2.uploader.upload(dataUrI)
+            return res.url;
+        })
+        const imageUrls = await Promise.all(uploadPromises)
+        //updatedimagesUrl contains new images which we want to upload on cloudinary but updatedHotelimagesUrls containe old images which can be same or less as we can delete in frontend alo
+        hotel.imageUrls=[...imageUrls,...(updatedHotel.imageUrls || [])]
+
+        await hotel.save()
+        res.status(201).json(hotel)
+        
+    } catch (error) {
+        res.status(500).json({message:'Something went wrong'})
+    }
+
+})
 export default router
+
 

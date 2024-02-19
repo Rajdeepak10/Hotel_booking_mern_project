@@ -4,6 +4,8 @@ import TypeSection from "./TypeSection"
 import Facilities from "./Facilities"
 import Guest from "./Guests"
 import Images from "./Images"
+import { hotelType } from "../../../backend/src/shared/types"
+import { useEffect } from "react"
 //FormData is built in javaScript object used to create set of key/value pairs
 export type hotelFormData = {
     name: string,
@@ -20,17 +22,26 @@ export type hotelFormData = {
     imageUrls: string[],
 }
 type Props={
+    hotel?:hotelType,
     onSave:(hotelData:FormData)=> void,
     isLoading:boolean
 }
-const ManageHotelForm = ({onSave,isLoading}:Props) => {
-    const formMethods = useForm<hotelFormData>()
-    const {handleSubmit}=formMethods
+const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
+    const formMethods = useForm<hotelFormData>();
+    const { handleSubmit, reset } = formMethods;
+  
+    useEffect(() => {
+      reset(hotel);
+    }, [hotel, reset]);
+
     const onSubmit=handleSubmit((formDataJson:hotelFormData)=>{
-        console.log(formDataJson);
+        const formData = new FormData();
+        if(hotel){
+            formData.append("hotelId",hotel._id)
+        }
         
         // here we are ccreating a new FormData object
-        const formData = new FormData();
+        
         formData.append("name", formDataJson.name);
         formData.append("city", formDataJson.city);
         formData.append("country", formDataJson.country);
@@ -44,11 +55,17 @@ const ManageHotelForm = ({onSave,isLoading}:Props) => {
         formDataJson.facilities.forEach((facility,index)=>{
             formData.append(`facilities[${index}]`,facility)
         })
-        // converting fileslist into array first then 
+        //on edit hotel page
+        if(formDataJson.imageUrls){
+            formDataJson.imageUrls.forEach((url,index)=>{
+                formData.append(`imageUrls[${index}]`,url)
+            })
+        }
+        // converting fileslist into array first then on add hotel page
         Array.from(formDataJson.imageFiles).forEach((imageFile)=>{
             formData.append(`imageFiles`,imageFile)
         })
-        console.log(formData);
+
         onSave(formData)
     })
     

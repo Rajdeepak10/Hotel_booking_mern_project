@@ -70,7 +70,32 @@ export const fetchMyHotels = async (): Promise<hotelType[]> => {
     return response.json();
   };
 
+  export const fetchMyHotelById = async (hotelId: string): Promise<hotelType> => {
+    const response = await fetch(`${API_BASE_URL}/api/my-hotels/${hotelId}`, {
+      credentials: "include",
+    });
+  
+    if (!response.ok) {
+      throw new Error("Error fetching Hotels");
+    }
+  
+    return response.json();
+  };
 
+
+export const updateMyHotel = async (hotelFromData:FormData)=>{
+    const response = await fetch(`${API_BASE_URL}/api/my-hotels/${hotelFromData.get("hotelId")}`,{
+        method:'PUT',
+        body:hotelFromData,
+        credentials:'include'
+    })
+    if (!response.ok) {
+        throw new Error("failed to update hotel!")
+        
+    }
+    // .json() method is used to extract json data from response
+    return response.json()
+}
 
 
 // checking whether user is loged in or not we will do it by checking cookie which we set up during register functionality

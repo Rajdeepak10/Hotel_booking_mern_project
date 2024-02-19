@@ -9,7 +9,7 @@ import SignIn from "./pages/SignIn";
 import { useAppContext } from "./contexts/AppContext";
 import AddHotel from "./pages/AddHotel";
 import MyHotels from "./pages/MyHotels";
-
+import EditHotel from './pages/EditHotel'
 function App() {
   const {isLoggedIn}=useAppContext()
   return (
@@ -26,13 +26,18 @@ function App() {
           <Layout><SignIn></SignIn></Layout>
         }></Route>
         
-        {isLoggedIn &&<Route path="/add-hotel" element={
+        {isLoggedIn &&<>
+          <Route path="/add-hotel" element={
           <Layout><AddHotel></AddHotel></Layout>
-        }></Route>}
-        {isLoggedIn &&<Route path="/my-hotels" element={
+        }></Route>
+        <Route path="/my-hotels" element={
           <Layout><MyHotels></MyHotels></Layout>
-        }></Route>}
-        
+        }></Route>
+        <Route path="/edit-hotel/:hotelId" element={
+          <Layout><EditHotel></EditHotel></Layout>
+        }></Route>
+        </>}
+
       </Routes>
       
     </Router>
