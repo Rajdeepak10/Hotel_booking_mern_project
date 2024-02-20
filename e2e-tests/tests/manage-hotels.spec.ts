@@ -1,11 +1,7 @@
 import {test,expect,defineConfig }from "@playwright/test";
 import path from "path"
 const UI_URL="http://localhost:5173";
-export default defineConfig({
-    expect:{
-        timeout:10 * 1000
-    }
-})
+
 
 test.beforeEach(async({page})=>{
     await page.goto(UI_URL)

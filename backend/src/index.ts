@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth"
 import myHotelRoutes from "./routes/my-hotels";
 import cookieParser from 'cookie-parser'
 import path from 'path'
+import hotelRoutes from './routes/hotels'
 import {v2 as cloudinary} from 'cloudinary';
 
 const app=express()
@@ -50,6 +51,7 @@ app.use(express.static(path.join(__dirname,"../../frontend/dist")))
 app.use("/api/users",userRoutes)
 app.use("/api/auth",authRoutes)
 app.use("/api/my-hotels", myHotelRoutes);
+app.use("/api/hotels",hotelRoutes)
 // all request except api should go to index.html
 
 app.get("*",(req:Request,res:Response)=>{
