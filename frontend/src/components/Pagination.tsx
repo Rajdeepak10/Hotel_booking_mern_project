@@ -1,4 +1,4 @@
-import { DiVim } from "react-icons/di";
+
 
 export type Props = {
     page:number;
