@@ -1,5 +1,4 @@
 
-
 export type Props = {
     page:number;
     pages: number;

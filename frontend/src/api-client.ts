@@ -142,9 +142,17 @@ export const searchHotel = async (
     }
     return response.json()
 }
+export const getHotelById=async(hotelId:string):Promise<hotelType>=>{
 
+    const response = await fetch(`${API_BASE_URL}/api/hotels/${hotelId}`)
+    if(!response.ok){
+        throw new Error("Error while fetching")
+    }
+    return response.json()
+}
 
 // checking whether user is loged in or not we will do it by checking cookie which we set up during register functionality
+
 export const validateToken=async()=>{
     const response = await fetch(`${API_BASE_URL}/api/auth/validate-token`,{
         credentials:"include"
